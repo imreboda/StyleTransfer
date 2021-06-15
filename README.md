@@ -16,4 +16,4 @@ Pick one of the offered style pictures and click on "Click to Style"
 
 Wait a few seconds and you will get the result. In fact two results are provided, because some "harsher" styles are better when a bit softened (i.e. blurred).
 
-![Wait a few seconds for the result](https://github.com/imreboda/StyleTransfer/blob/main/illustration/steps_34.png?raw=true)
+![Wait a few seconds for the result](https://github.com/imreboda/StyleTransfer/blob/main/illustration/steps_5.png?raw=true)
