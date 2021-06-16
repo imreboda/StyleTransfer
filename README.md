@@ -28,3 +28,10 @@ shiny app responsible for layout: $HOME/shiny/app.R
 The routine that does the style transfer: $HOME/GAN_Style/bd_FastStyletransfer.R
 
 Style template pictures: in $HOME/shiny/www/img and their blurred versions are in $HOME/shiny/www/img/blurred. Every picture has its blurred pair, same name just "blur_" appended in front of the original picture name.
+
+
+## The way it works
+
+### shiny application
+
+bd_image_list (): function that collects filename middle part (between two "_"-s in filename). This is for further use, the idea is that maybe some useful tag is included in the filename that could be shown / used.
