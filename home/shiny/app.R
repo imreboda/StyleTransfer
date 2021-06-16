@@ -11,21 +11,14 @@
 # mi van ebben
 #
 # kitesz kepeket grid-ben es megerti ha rajuk klikkel valaki
-# https://stackoverflow.com/questions/22773068/generate-table-and-clickable-images-in-shiny-r/22773504
 # F1.-el jelolt reszek vegzik a kepek kiteveset grid-ben es a raklikkeles elkapasat. 
 #
 # beolvas egy file-t a kliens pc-rol
-# https://stackoverflow.com/questions/39976684/r-shiny-upload-image-file-and-save-to-server
 # F2.-el jelolt reszek vegzik a beolvasast es a kivalasztott kep megjeleniteset
 #
 # Action button-t tilt amig nincs style es file kivalasztva, illetve letilt a style transfer idejere
-# https://stackoverflow.com/questions/46891095/disable-action-button-when-textinput-is-empty-in-shiny-app-r
 # F3.-al jelolt reszek vegzik az Action Button tiltast / engedelyezest
 #
-# Other tips
-# lightbox: https://mrjoh3.github.io/2018/12/26/shiny-image-gallery-examples/  and   https://github.com/mrjoh3/gallerier
-# https://stackoverflow.com/questions/41750068/how-to-reduce-the-border-width-of-sidebarpanel-in-shiny
-# https://stackoverflow.com/questions/60333646/creating-a-mouseover-zoom-or-hover-zoom-in-rshiny
 
 
 
@@ -39,14 +32,14 @@ library (dplyr)
 library(keras)
 
 # Include the script that does the fast neural style transfer
-source ('/home/teddy/GAN_Style/bd_FastStyletransfer.R')
+source ('$HOME/GAN_Style/bd_FastStyletransfer.R')
 
 if (names(dev.cur()) != "null device") dev.off()
 pdf(NULL)
 
-image_dir <- '/home/teddy/shiny/www/img'
+image_dir <- '/$HOME/shiny/www/img'
 
-# below needed to present the style images in the grid (https://stackoverflow.com/questions/38791613/including-an-image-in-a-shiny-app-package)
+# below needed to present the style images in the grid 
 # use later in code part "tags$img(src=paste0("image_dir", "/", img)..."
 addResourcePath(prefix = 'image_dir', directoryPath = image_dir)
 
@@ -109,8 +102,7 @@ ui <- fluidPage(theme = shinytheme("superhero"),
                     (
                         HTML( paste('<br/>', h3(textOutput("MainTitle")))),  #add newline before title
                         textOutput("text2"),
-    #                    textOutput("trial"),    # bd csak proba to be removed (1/3)
-                        
+                         
                         # F1. Ez teszi ki a kepeket az UI oldalon es elkapja a click-eket (JS)
                         uiOutput("imageGrid"),
                         tags$script(HTML(
@@ -132,9 +124,8 @@ server <- function(input, output, session) {
     output$MainTitle <- renderText("Pick your style")
     output$SideTitle <- renderText("Pick your file")
     
-    # output$trial <- renderText("TRIAL ROW")      # bd csak proba to be removed (2/3)
     
-    # F1. Ez teszi ki a kepeket a server oldalon es valahogy engedi a click input-ot a kepeken
+    # F1. Ez teszi ki a kepeket a server oldalon es engedi a click input-ot a kepeken
     output$imageGrid <- renderUI({
         fluidRow(
             lapply(images$src, function(img) {
@@ -170,7 +161,6 @@ server <- function(input, output, session) {
             ui = img(src = b64, width = 250)
         )
         
-    #    output$trial <- renderText(inFile$datapath)    # bd csak proba to be removed (3/3)
     })   # end of observeEvent input$myFile
     
     
@@ -193,8 +183,10 @@ server <- function(input, output, session) {
     
     # clicking on the "Click to Style" button
     observeEvent(input$do, {
+        
         # disable "Click to Style" button in order not to allow multiple clicks while styling
         disable("do")
+        
         # do the fast style transfer: original_pic, style_pic, file_to_save 
         temp_save_fname <<- gsub("/","", input$myFile$datapath)
         temp_save_fname_blur <<- paste0("bd_", temp_save_fname)
@@ -204,13 +196,12 @@ server <- function(input, output, session) {
         style_it(input$myFile$datapath, 
                  file.path(image_dir,"blurred", paste0("blur_", input$clickimg)), 
                  file.path ("/home/teddy/shiny/www", temp_save_fname_blur))
+        
         # draw pic
         showModal(modalDialog(
             title = "Your Image",
             "Here is the converted image with strong and light style transfers",
             renderUI({tags$div(img(src = temp_save_fname, width = 400), img(src = temp_save_fname_blur, width = 400))}),
-            # renderUI({img(src = temp_save_fname, width = 400)}),  # works for one picture
-            #HTML('<img src="static filename", width="550" >'),   # as above line w. stat. fname
             size="l",
             fade=F,
             easyClose = FALSE,
@@ -222,8 +213,8 @@ server <- function(input, output, session) {
     # catch modal (child window) close button. -> close modal, remove styled file, reload session
     observeEvent(input$StyledPopClose, {
         removeModal()
-        file.remove(file.path ("/home/teddy/shiny/www", temp_save_fname))
-        file.remove(file.path ("/home/teddy/shiny/www", temp_save_fname_blur))
+        file.remove(file.path ("$HOME/shiny/www", temp_save_fname))
+        file.remove(file.path ("$HOME/shiny/www", temp_save_fname_blur))
         # re-start the entire process
         session$reload()
     })
