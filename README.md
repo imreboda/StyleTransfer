@@ -21,6 +21,9 @@ Wait a few seconds and you will get the result. In fact two results are provided
 ![Wait a few seconds for the result](https://github.com/imreboda/StyleTransfer/blob/main/illustration/steps_5.png?raw=true)
 
 
+The uploaded file (i.e. the one to be styled) is stored temporarily: between clicking on "Click to Style" and closing the result styled pictures.
+
+
 ## Structure
 
 shiny app responsible for layout: $HOME/shiny/app.R
