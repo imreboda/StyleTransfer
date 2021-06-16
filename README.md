@@ -1,5 +1,7 @@
 # StyleTransfer
 
+## What is this
+
 This is a GAN style transfer game project implemented in shiny.
 
 I installed a shiny server on AWS, put up the scripts, and this is what it does:
